@@ -51,6 +51,8 @@ export const lessons = pgTable("lessons", {
     })
     .notNull(),
   order: integer("order").notNull(),
+  imageUrl: text("image_url"), // Nuevo campo
+  audioUrl: text("audio_url"), // Nuevo campo
 });
 
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
