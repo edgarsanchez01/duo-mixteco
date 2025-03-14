@@ -12,27 +12,31 @@ export const GET = async () => {
 };
 
 export const POST = async (req: NextRequest) => {
-  const isAdmin = getIsAdmin();
-  if (!isAdmin) return new NextResponse("Unauthorized.", { status: 401 });
+  try {
+    const isAdmin = getIsAdmin();
+    if (!isAdmin) return new NextResponse("Unauthorized.", { status: 401 });
 
-  const body = (await req.json()) as typeof lessons.$inferSelect;
+    const body = await req.json();
 
-  // Validar que la imagen y el audio sean URLs
-  if (!body.imageUrl || !body.audioUrl) {
-    return new NextResponse("Faltan la imagen o el audio.", { status: 400 });
+    if (!body.title) {
+      return new NextResponse("El título es obligatorio", { status: 400 });
+    }
+
+    // Guardar la lección con imagen y audio en la base de datos
+    const data = await db
+      .insert(lessons)
+      .values({
+        title: body.title,
+        unitId: body.unitId,
+        order: body.order || 1,
+        imageUrl: body.imageUrl || null, // Guardar la URL de la imagen
+        audioUrl: body.audioUrl || null, // Guardar la URL del audio
+      })
+      .returning();
+
+    return NextResponse.json(data[0]);
+  } catch (error) {
+    console.error("Error al guardar en la base de datos:", error);
+    return new NextResponse("Error interno", { status: 500 });
   }
-
-  // Insertar la nueva lección con imagen y audio
-  const data = await db
-    .insert(lessons)
-    .values({
-      title: body.title,
-      unitId: body.unitId,
-      order: body.order,
-      imageUrl: body.imageUrl, // Guardar la URL de la imagen
-      audioUrl: body.audioUrl, // Guardar la URL del audio
-    })
-    .returning();
-
-  return NextResponse.json(data[0]);
 };
