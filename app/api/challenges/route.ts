@@ -8,10 +8,19 @@ export const GET = async () => {
   const isAdmin = getIsAdmin();
   if (!isAdmin) return new NextResponse("Unauthorized.", { status: 401 });
 
-  const data = await db.query.challenges.findMany();
+  const data = await db.query.challenges.findMany({
+    with: {
+      challengeOptions: true, // 🔥 Esto asegura que challengeOptions esté incluido
+    },
+  });
+
+  console.log("📌 Datos obtenidos en la API:", JSON.stringify(data, null, 2)); // 🔍 Depuración
 
   return NextResponse.json(data);
 };
+
+
+
 
 export const POST = async (req: NextRequest) => {
   const isAdmin = getIsAdmin();

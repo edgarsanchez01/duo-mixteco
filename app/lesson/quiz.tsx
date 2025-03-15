@@ -82,7 +82,14 @@ export const Quiz = ({
   const [status, setStatus] = useState<"none" | "wrong" | "correct">("none");
 
   const challenge = challenges[activeIndex];
-  const options = challenge?.challengeOptions ?? [];
+  const options =
+  challenge
+    ? Array.isArray(challenge.options) && challenge.options.length > 0
+      ? challenge.options
+      : challenge.challengeOptions ?? []
+    : [];
+
+console.log("📌 Opciones procesadas en Quiz.tsx:", options);
 
   const onNext = () => {
     setActiveIndex((current) => current + 1);
@@ -95,7 +102,7 @@ export const Quiz = ({
   };
 
   const onContinue = () => {
-    if (!selectedOption) return;
+    if (selectedOption === undefined) return; // 🔥 Ahora permitimos el índice 0 como opción válida
 
     if (status === "wrong") {
       setStatus("none");
@@ -114,7 +121,8 @@ export const Quiz = ({
 
     if (!correctOption) return;
 
-    if (correctOption.id === selectedOption) {
+    // 🔥 Corregimos la comparación para que use el índice en lugar del ID de la base de datos
+    if (options[selectedOption]?.correct) {
       startTransition(() => {
         upsertChallengeProgress(challenge.id)
           .then((response) => {
@@ -151,7 +159,8 @@ export const Quiz = ({
           .catch(() => toast.error("Something went wrong. Please try again."));
       });
     }
-  };
+};
+
 
   if (!challenge) {
     return (
@@ -230,21 +239,21 @@ export const Quiz = ({
                 <QuestionBubble question={challenge.question} />
               )}
 
-              <Challenge
-                options={options}
-                onSelect={onSelect}
-                status={status}
-                selectedOption={selectedOption}
-                disabled={pending}
-                type={challenge.type}
-              />
+<Challenge
+    options={options}
+    onSelect={onSelect}
+    status={status}
+    selectedOption={selectedOption}
+    disabled={pending}  // 🔥 Asegúrate de que `pending` sea pasado como prop
+    type={challenge.type}
+  />
             </div>
           </div>
         </div>
       </div>
 
       <Footer
-        disabled={pending || !selectedOption}
+        disabled={pending || selectedOption === undefined}
         status={status}
         onCheck={onContinue}
       />

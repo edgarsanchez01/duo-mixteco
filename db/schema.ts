@@ -1,4 +1,5 @@
 import { relations } from "drizzle-orm";
+
 import {
   boolean,
   integer,
@@ -7,6 +8,7 @@ import {
   serial,
   text,
   timestamp,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 import { MAX_HEARTS } from "@/constants";
@@ -68,14 +70,14 @@ export const challengesEnum = pgEnum("type", ["SELECT", "ASSIST"]);
 export const challenges = pgTable("challenges", {
   id: serial("id").primaryKey(),
   lessonId: integer("lesson_id")
-    .references(() => lessons.id, {
-      onDelete: "cascade",
-    })
+    .references(() => lessons.id, { onDelete: "cascade" })
     .notNull(),
   type: challengesEnum("type").notNull(),
   question: text("question").notNull(),
   order: integer("order").notNull(),
+  options: jsonb("options").notNull().default([]),  // Almacenar las opciones como JSON
 });
+
 
 export const challengesRelations = relations(challenges, ({ one, many }) => ({
   lesson: one(lessons, {
