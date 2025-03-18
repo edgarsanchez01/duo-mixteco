@@ -14,7 +14,6 @@ export const GET = async () => {
     },
   });
 
-  console.log("📌 Datos obtenidos en la API:", JSON.stringify(data, null, 2)); // 🔍 Depuración
 
   return NextResponse.json(data);
 };

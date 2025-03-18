@@ -65,7 +65,14 @@ export const lessonsRelations = relations(lessons, ({ one, many }) => ({
   challenges: many(challenges),
 }));
 
-export const challengesEnum = pgEnum("type", ["SELECT", "ASSIST"]);
+export const challengesEnum = pgEnum("type", [
+  "SELECT",
+  "ASSIST",
+  "WRITE",  // ✅ Agregado
+  "MATCH",  // ✅ Agregado
+  "FILL-IN" // ✅ Agregado
+]);
+
 
 export const challenges = pgTable("challenges", {
   id: serial("id").primaryKey(),
@@ -76,6 +83,8 @@ export const challenges = pgTable("challenges", {
   question: text("question").notNull(),
   order: integer("order").notNull(),
   options: jsonb("options").notNull().default([]),  // Almacenar las opciones como JSON
+  answer: text("answer"), // 🔥 Para WRITE y FILL-IN
+  pairs: jsonb("pairs").default([]),
 });
 
 

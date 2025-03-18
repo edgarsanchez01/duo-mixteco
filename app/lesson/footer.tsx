@@ -5,15 +5,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type FooterProps = {
-  onCheck: () => void;
   status: "correct" | "wrong" | "none" | "completed";
+  onCheck: () => void;
   disabled?: boolean;
   lessonId?: number;
 };
 
 export const Footer = ({
-  onCheck,
   status,
+  onCheck,
   disabled,
   lessonId,
 }: FooterProps) => {
@@ -32,25 +32,15 @@ export const Footer = ({
         {status === "correct" && (
           <div className="flex items-center text-base font-bold text-green-500 lg:text-2xl">
             <CheckCircle className="mr-4 h-6 w-6 lg:h-10 lg:w-10" />
-            Nicely done!
+            ¡Bien hecho!
           </div>
         )}
 
         {status === "wrong" && (
           <div className="flex items-center text-base font-bold text-rose-500 lg:text-2xl">
             <XCircle className="mr-4 h-6 w-6 lg:h-10 lg:w-10" />
-            Try again.
+            Inténtalo de nuevo.
           </div>
-        )}
-
-        {status === "completed" && (
-          <Button
-            variant="default"
-            size={isMobile ? "sm" : "lg"}
-            onClick={() => (window.location.href = `/lesson/${lessonId}`)}
-          >
-            Practice again
-          </Button>
         )}
 
         <Button
@@ -70,3 +60,6 @@ export const Footer = ({
     </footer>
   );
 };
+
+
+
