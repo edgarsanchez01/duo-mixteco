@@ -28,18 +28,32 @@ type QuizProps = {
   initialPercentage: number;
   initialHearts: number;
   initialLessonId: number;
-  initialLessonChallenges: (typeof challenges.$inferSelect & {
+  initialLessonChallenges: {
+    id: number;
+    lessonId: number;
+    order: number;
+    type: "SELECT" | "ASSIST" | "WRITE" | "MATCH" | "FILL-IN";
+    question: string;
     completed: boolean;
     options?: { text: string; correct: boolean }[];
     answer?: string;
     pairs?: { left: string; right: string }[];
-  })[];
+    imageSrc?: string | null;
+    audioSrc?: string | null;
+  }[];
   userSubscription:
-    | (typeof userSubscription.$inferSelect & {
+    | {
+        id: number;
+        userId: string;
+        stripeCustomerId: string;
+        stripeSubscriptionId: string;
+        stripePriceId: string;
+        stripeCurrentPeriodEnd: Date;
         isActive: boolean;
-      })
+      }
     | null;
 };
+
 
 export const Quiz = ({
   initialPercentage,
@@ -133,10 +147,15 @@ export const Quiz = ({
   };
 
   const handleMatchSubmit = (newStatus: "correct" | "wrong") => {
-    setStatus(newStatus);
+    if (newStatus === "correct") {
+      handleAnswerSubmit(true); // ✅ Esto actualiza el progreso
+    } else {
+      handleAnswerSubmit(false); // ❌ También puede ser útil si quieres penalizar los errores
+    }
   };
+  
 
-  if (!challenge) {
+  if (!challenge) { 
     return (
       <>
         {finishAudio}
@@ -173,8 +192,7 @@ export const Quiz = ({
               ) : challenge.type === "WRITE" ? (
                 <Write correctAnswer={challenge.answer ?? ""} onSubmit={handleAnswerSubmit} />
               ) : challenge.type === "MATCH" ? (
-                <Match pairs={challenge.pairs ?? []} onSubmit={handleMatchSubmit} />
-              ) : challenge.type === "FILL-IN" ? (
+                <Match pairs={challenge.pairs ?? []} onSubmit={handleMatchSubmit} />) : challenge.type === "FILL-IN" ? (
                 <FillIn sentence={challenge.question} missingWord={challenge.answer ?? ""} onSubmit={handleAnswerSubmit} />
               ) : (
                 <p>Tipo de desafío no soportado</p>

@@ -53,8 +53,6 @@ export const lessons = pgTable("lessons", {
     })
     .notNull(),
   order: integer("order").notNull(),
-  imageUrl: text("image_url"), // Nuevo campo
-  audioUrl: text("audio_url"), // Nuevo campo
 });
 
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
@@ -82,9 +80,11 @@ export const challenges = pgTable("challenges", {
   type: challengesEnum("type").notNull(),
   question: text("question").notNull(),
   order: integer("order").notNull(),
-  options: jsonb("options").notNull().default([]),  // Almacenar las opciones como JSON
-  answer: text("answer"), // 🔥 Para WRITE y FILL-IN
-  pairs: jsonb("pairs").default([]),
+  imageSrc: text("image_src"), // Imagen general del desafío
+  audioSrc: text("audio_src"), // Audio general del desafío
+  options: jsonb("options").notNull().default([]),  // Opciones almacenadas en JSON
+  answer: text("answer"), // Para WRITE y FILL-IN
+  pairs: jsonb("pairs").default([]), // Para MATCH
 });
 
 

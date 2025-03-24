@@ -20,15 +20,30 @@ const LessonPage = async () => {
   // 🔹 Transformamos los retos para que tengan el tipo correcto
   const formattedChallenges = lesson.challenges.map((challenge) => ({
     id: challenge.id,
-    order: challenge.order,
     lessonId: challenge.lessonId,
+    order: challenge.order,
     type: challenge.type,
     question: challenge.question,
     completed: challenge.completed,
-    options: Array.isArray(challenge.options) ? challenge.options : [],
-    answer: typeof challenge.answer === "string" ? challenge.answer : "",
-    pairs: Array.isArray(challenge.pairs) ? challenge.pairs : [],
+    options: Array.isArray(challenge.options)
+      ? challenge.options.map((opt: any) => ({
+          text: typeof opt.text === "string" ? opt.text : "",
+          correct: typeof opt.correct === "boolean" ? opt.correct : false,
+        }))
+      : undefined,
+    answer: typeof challenge.answer === "string" ? challenge.answer : undefined,
+    pairs: Array.isArray(challenge.pairs)
+      ? challenge.pairs.map((pair: any) => ({
+          left: typeof pair.left === "string" ? pair.left : "",
+          right: typeof pair.right === "string" ? pair.right : "",
+        }))
+      : undefined,
+    imageSrc: typeof challenge.imageSrc === "string" ? challenge.imageSrc : null,
+    audioSrc: typeof challenge.audioSrc === "string" ? challenge.audioSrc : null,
   }));
+  
+  
+  
 
   const initialPercentage =
     lesson.challenges.length > 0

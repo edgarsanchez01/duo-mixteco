@@ -1,21 +1,20 @@
-import { List, Datagrid, TextField, NumberField, ReferenceField, ImageField } from "react-admin";
+import {
+  Datagrid,
+  List,
+  NumberField,
+  ReferenceField,
+  TextField,
+} from "react-admin";
 
-export const LessonList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" label="ID" />
-      <TextField source="title" label="Título" />
-      <ReferenceField source="unitId" reference="units" label="Unidad">
+export const LessonList = () => {
+  return (
+    <List>
+      <Datagrid rowClick="edit">
+        <NumberField source="id" />
         <TextField source="title" />
-      </ReferenceField>
-      <NumberField source="order" label="Orden" />
-
-      {/* Mostrar imagen */}
-      <ImageField source="imageUrl" label="Imagen" />
-
-      {/* Mostrar audio */}
-      <TextField source="audioUrl" label="Audio" />
-
-    </Datagrid>
-  </List>
-);
+        <ReferenceField source="unitId" reference="units" />
+        <NumberField source="order" />
+      </Datagrid>
+    </List>
+  );
+};

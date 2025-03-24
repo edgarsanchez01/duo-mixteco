@@ -6,12 +6,12 @@ import { Quiz } from "../quiz";
 
 type LessonIdPageProps = {
   params: {
-    lessonId: number;
+    lessonId: string;
   };
 };
 
 const LessonIdPage = async ({ params }: LessonIdPageProps) => {
-  const lessonData = getLesson(params.lessonId);
+  const lessonData = getLesson(Number(params.lessonId));
   const userProgressData = getUserProgress();
   const userSubscriptionData = getUserSubscription();
 
@@ -23,15 +23,37 @@ const LessonIdPage = async ({ params }: LessonIdPageProps) => {
 
   if (!lesson || !userProgress) return redirect("/learn");
 
+  const formattedChallenges = lesson.challenges.map((challenge) => ({
+    id: challenge.id,
+    lessonId: challenge.lessonId,
+    order: challenge.order,
+    type: challenge.type,
+    question: challenge.question,
+    completed: challenge.completed,
+    options: Array.isArray(challenge.options)
+      ? challenge.options.map((opt: any) => ({
+          text: typeof opt.text === "string" ? opt.text : "",
+          correct: typeof opt.correct === "boolean" ? opt.correct : false,
+        }))
+      : undefined,
+    answer: typeof challenge.answer === "string" ? challenge.answer : undefined,
+    pairs: Array.isArray(challenge.pairs)
+      ? challenge.pairs.map((pair: any) => ({
+          left: typeof pair.left === "string" ? pair.left : "",
+          right: typeof pair.right === "string" ? pair.right : "",
+        }))
+      : undefined,
+    imageSrc: typeof challenge.imageSrc === "string" ? challenge.imageSrc : null,
+    audioSrc: typeof challenge.audioSrc === "string" ? challenge.audioSrc : null,
+  }));
+
   const initialPercentage =
-    (lesson.challenges.filter((challenge) => challenge.completed).length /
-      lesson.challenges.length) *
-    100;
+    (lesson.challenges.filter((challenge) => challenge.completed).length / lesson.challenges.length) * 100;
 
   return (
     <Quiz
       initialLessonId={lesson.id}
-      initialLessonChallenges={lesson.challenges}
+      initialLessonChallenges={formattedChallenges}
       initialHearts={userProgress.hearts}
       initialPercentage={initialPercentage}
       userSubscription={userSubscription}
