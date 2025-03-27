@@ -12,8 +12,7 @@ import {
   FileInput,
   FileField,
 } from "react-admin";
-import { useState } from "react";
-import { useWatch } from "react-hook-form"; // ✅ Detecta cambios en tiempo real
+import { useWatch } from "react-hook-form";
 
 export const ChallengeCreate = () => {
   const uploadFile = async (file: File, type: "image" | "audio") => {
@@ -27,7 +26,7 @@ export const ChallengeCreate = () => {
     });
 
     const data = await response.json();
-    return data.url; // 🔥 Devuelve la URL del archivo subido
+    return data.url;
   };
 
   return (
@@ -41,13 +40,16 @@ export const ChallengeCreate = () => {
             return field;
           };
 
-          // 🔹 Validar que la pregunta esté presente (se aplica para todos los tipos)
-          if (!values.question || values.question.trim() === "") {
+          // Validación
+          if (
+            (values.type !== "FILL-IN" && (!values.question || values.question.trim() === "")) ||
+            (values.type === "FILL-IN" && (!values.fillInQuestion || values.fillInQuestion.trim() === ""))
+          ) {
             alert("La pregunta es obligatoria.");
             return;
           }
 
-          // 🔹 Procesar opciones si existen
+          // Opciones
           const processedOptions = await Promise.all(
             (values.options || []).map(async (option: any) => ({
               ...option,
@@ -60,7 +62,12 @@ export const ChallengeCreate = () => {
             }))
           );
 
-          // 🔥 Enviar datos al backend
+          // Imagen general
+          const imageUrl = values.image?.rawFile
+            ? await uploadFile(values.image.rawFile, "image")
+            : values.imageSrc ?? "";
+
+          // Enviar
           await fetch("/api/challenges", {
             method: "POST",
             headers: {
@@ -68,15 +75,18 @@ export const ChallengeCreate = () => {
             },
             body: JSON.stringify({
               ...values,
-              question: values.question.trim(), // Asegurar que no esté vacío
+              question:
+                values.type === "FILL-IN"
+                  ? values.fillInQuestion.trim()
+                  : values.question.trim(),
               options: processedOptions,
+              imageSrc: imageUrl,
             }),
           });
 
           alert("Desafío creado con éxito");
         }}
       >
-        {/* 🔹 Tipo de Pregunta */}
         <SelectInput
           source="type"
           validate={[required()]}
@@ -89,47 +99,33 @@ export const ChallengeCreate = () => {
           ]}
         />
 
-        {/* 🔹 ID de la Lección */}
         <ReferenceInput source="lessonId" reference="lessons" />
-
-        {/* 🔹 Orden del Desafío */}
         <NumberInput source="order" validate={[required()]} label="Order" />
-
-        {/* ✅ Mostrar campos dinámicos según el tipo seleccionado */}
         <DynamicFields />
       </SimpleForm>
     </Create>
   );
 };
 
-// ✅ Componente para manejar la lógica del formulario dinámico
 const DynamicFields = () => {
-  const type = useWatch({ name: "type" }); // 🔥 Detecta cambios en tiempo real
-
-  if (!type) return null; // No mostrar nada si no se seleccionó un tipo
+  const type = useWatch({ name: "type" });
+  if (!type) return null;
 
   return (
     <>
-      {/* 
-          Para todos los tipos, pedimos la "Pregunta" o "Frase". 
-          Si no es MATCH, se muestra aquí; en MATCH se pedirá junto con los pares.
-      */}
-      {type !== "MATCH" && (
+      {type !== "MATCH" && type !== "FILL-IN" && (
         <TextInput source="question" validate={[required()]} label="Pregunta o Frase" />
       )}
 
-      {/* ✅ Campos para SELECT */}
       {type === "SELECT" && (
         <ArrayInput source="options" label="Options">
           <SimpleFormIterator>
             <TextInput source="text" validate={[required()]} label="Option Text" />
             <BooleanInput source="correct" label="Is Correct?" />
-            {/* 🔹 Subida de imagen o URL */}
             <FileInput source="image" label="Subir imagen (opcional)" accept="image/*">
               <FileField source="src" title="title" />
             </FileInput>
             <TextInput source="imageSrc" label="O ingresa una URL de imagen" />
-            {/* 🔹 Subida de audio o URL */}
             <FileInput source="audio" label="Subir audio (opcional)" accept="audio/*">
               <FileField source="src" title="title" />
             </FileInput>
@@ -138,7 +134,6 @@ const DynamicFields = () => {
         </ArrayInput>
       )}
 
-      {/* ✅ Campos para ASSIST (solo opciones de texto) */}
       {type === "ASSIST" && (
         <ArrayInput source="options" label="Options">
           <SimpleFormIterator>
@@ -148,7 +143,6 @@ const DynamicFields = () => {
         </ArrayInput>
       )}
 
-      {/* ✅ Campos para MATCH (frase + pares de palabras) */}
       {type === "MATCH" && (
         <>
           <TextInput source="question" validate={[required()]} label="Frase" />
@@ -161,33 +155,29 @@ const DynamicFields = () => {
         </>
       )}
 
-      {/* ✅ Campos para FILL-IN (frase con espacios en blanco, opciones incorrectas y respuestas correctas) */}
       {type === "FILL-IN" && (
-  <>
-    <TextInput source="question" validate={[required()]} label="Frase con espacios en blanco (usa ___ donde va cada respuesta)" />
-    
-    {/* Opciones disponibles (incluye correctas e incorrectas) */}
-    <ArrayInput source="options" label="Opciones a mostrar (mezcladas)">
-      <SimpleFormIterator>
-        <TextInput source="text" validate={[required()]} label="Opción" />
-      </SimpleFormIterator>
-    </ArrayInput>
+        <>
+          <TextInput
+            source="fillInQuestion"
+            validate={[required()]}
+            label="Frase con espacio en blanco (usa '____')"
+          />
+          <ArrayInput source="options" label="Opciones (marca la correcta)">
+            <SimpleFormIterator>
+              <TextInput source="text" validate={[required()]} label="Texto de la opción" />
+              <BooleanInput source="correct" label="¿Es correcta?" />
+            </SimpleFormIterator>
+          </ArrayInput>
+          <FileInput source="image" label="Subir imagen (opcional)" accept="image/*">
+            <FileField source="src" title="title" />
+          </FileInput>
+          <TextInput source="imageSrc" label="O URL de imagen (opcional)" />
+        </>
+      )}
 
-    {/* Respuestas correctas (en orden) */}
-    <ArrayInput source="answer" label="Respuestas correctas (en orden)">
-      <SimpleFormIterator>
-        <TextInput source="text" validate={[required()]} label="Respuesta correcta" />
-      </SimpleFormIterator>
-    </ArrayInput>
-  </>
-)}
-
-
-      {/* ✅ Campos para WRITE (pregunta + respuesta correcta) */}
       {type === "WRITE" && (
         <>
           <TextInput source="answer" validate={[required()]} label="Respuesta Correcta" />
-          {/* Aquí también se pueden incluir imagen y audio opcionales para la referencia, si se desea */}
           <FileInput source="image" label="Subir imagen de referencia (opcional)" accept="image/*">
             <FileField source="src" title="title" />
           </FileInput>

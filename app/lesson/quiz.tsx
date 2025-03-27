@@ -88,6 +88,9 @@ export const Quiz = ({
 
   const [selectedOption, setSelectedOption] = useState<number>();
   const [status, setStatus] = useState<"none" | "wrong" | "correct">("none");
+  const [fillInSelected, setFillInSelected] = useState<string | null>(null);
+  const [fillInLocked, setFillInLocked] = useState(false);
+
 
   const challenge = challenges[activeIndex];
   const options = challenge?.options ?? [];
@@ -127,7 +130,7 @@ export const Quiz = ({
   };
 
   const onContinue = () => {
-    if (status === "wrong") {
+    if (status === "wrong") { 
       setStatus("none");
       setSelectedOption(undefined);
       return;
@@ -144,6 +147,24 @@ export const Quiz = ({
       if (!correctOption) return;
       handleAnswerSubmit(options[selectedOption!]?.correct ?? false);
     }
+
+    if (challenge.type === "FILL-IN") {
+      const correctText = challenge.options?.find((opt) => opt.correct)?.text;
+      const isCorrect = fillInSelected === correctText;
+    
+      if (!fillInSelected || fillInLocked) return;
+    
+      handleAnswerSubmit(isCorrect);
+      if (!isCorrect) {
+        // Permite volver a seleccionar
+        setFillInSelected(null);
+      }      
+      if (isCorrect) {
+        setFillInLocked(true);
+      }
+      return;
+    }
+    
   };
 
   const handleMatchSubmit = (newStatus: "correct" | "wrong") => {
@@ -184,7 +205,11 @@ export const Quiz = ({
       <div className="flex-1">
         <div className="flex h-full items-center justify-center">
           <div className="flex w-full flex-col gap-y-12 px-6 lg:min-h-[350px] lg:w-[600px] lg:px-0">
-            <h1 className="text-center text-lg font-bold text-neutral-700 lg:text-start lg:text-3xl">{title}</h1>
+            {challenge.type !== "FILL-IN" && (
+                <h1 className="text-center text-lg font-bold text-neutral-700 lg:text-start lg:text-3xl">
+                  {title}
+                </h1>
+              )}
             <div>
               {challenge.type === "ASSIST" && <QuestionBubble question={challenge.question} />}
               {challenge.type === "SELECT" || challenge.type === "ASSIST" ? (
@@ -193,7 +218,15 @@ export const Quiz = ({
                 <Write correctAnswer={challenge.answer ?? ""} onSubmit={handleAnswerSubmit} />
               ) : challenge.type === "MATCH" ? (
                 <Match pairs={challenge.pairs ?? []} onSubmit={handleMatchSubmit} />) : challenge.type === "FILL-IN" ? (
-                <FillIn sentence={challenge.question} missingWord={challenge.answer ?? ""} onSubmit={handleAnswerSubmit} />
+                  <FillIn
+                    sentence={challenge.question}
+                    options={challenge.options ?? []}
+                    onValidate={setFillInSelected}
+                    locked={fillInLocked}
+                    correctAnswer={challenge.options?.find((o) => o.correct)?.text}
+                    selected={fillInSelected}
+                    imageSrc={challenge.imageSrc ?? null} // <-- aquí
+                  />
               ) : (
                 <p>Tipo de desafío no soportado</p>
               )}
