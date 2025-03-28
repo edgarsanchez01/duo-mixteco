@@ -80,11 +80,14 @@ export const challenges = pgTable("challenges", {
   type: challengesEnum("type").notNull(),
   question: text("question").notNull(),
   order: integer("order").notNull(),
-  imageSrc: text("image_src"), // Imagen general del desafío
-  audioSrc: text("audio_src"), // Audio general del desafío
-  options: jsonb("options").notNull().default([]),  // Opciones almacenadas en JSON
-  answer: text("answer"), // Para WRITE y FILL-IN
-  pairs: jsonb("pairs").default([]), // Para MATCH
+  imageSrc: text("image_src"),
+  audioSrc: text("audio_src"),
+  options: jsonb("options")
+    .$type<{ text: string; correct: boolean; imageSrc?: string; audioSrc?: string }[]>()
+    .notNull()
+    .default([]), // 👈 Aquí es donde se arregla todo
+  answer: text("answer"),
+  pairs: jsonb("pairs").$type<{ left: string; right: string }[]>().default([]),
 });
 
 

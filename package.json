@@ -75,6 +75,7 @@
     }
   ],
   "dependencies": {
+    "@clerk/localizations": "^3.13.4",
     "@clerk/nextjs": "^4.31.6",
     "@neondatabase/serverless": "^0.9.0",
     "@radix-ui/react-avatar": "^1.0.4",

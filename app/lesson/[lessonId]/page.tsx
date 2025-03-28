@@ -30,12 +30,7 @@ const LessonIdPage = async ({ params }: LessonIdPageProps) => {
     type: challenge.type,
     question: challenge.question,
     completed: challenge.completed,
-    options: Array.isArray(challenge.options)
-      ? challenge.options.map((opt: any) => ({
-          text: typeof opt.text === "string" ? opt.text : "",
-          correct: typeof opt.correct === "boolean" ? opt.correct : false,
-        }))
-      : undefined,
+    options: challenge.options,
     answer: typeof challenge.answer === "string" ? challenge.answer : undefined,
     pairs: Array.isArray(challenge.pairs)
       ? challenge.pairs.map((pair: any) => ({
@@ -45,7 +40,7 @@ const LessonIdPage = async ({ params }: LessonIdPageProps) => {
       : undefined,
     imageSrc: typeof challenge.imageSrc === "string" ? challenge.imageSrc : null,
     audioSrc: typeof challenge.audioSrc === "string" ? challenge.audioSrc : null,
-  }));
+  }));  
 
   const initialPercentage =
     (lesson.challenges.filter((challenge) => challenge.completed).length / lesson.challenges.length) * 100;

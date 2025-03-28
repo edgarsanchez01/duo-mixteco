@@ -35,7 +35,12 @@ type QuizProps = {
     type: "SELECT" | "ASSIST" | "WRITE" | "MATCH" | "FILL-IN";
     question: string;
     completed: boolean;
-    options?: { text: string; correct: boolean }[];
+    options?: {
+      text: string;
+      correct: boolean;
+      imageSrc?: string | null;
+      audioSrc?: string | null;
+    }[];    
     answer?: string;
     pairs?: { left: string; right: string }[];
     imageSrc?: string | null;

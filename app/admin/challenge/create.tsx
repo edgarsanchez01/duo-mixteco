@@ -51,16 +51,23 @@ export const ChallengeCreate = () => {
 
           // Opciones
           const processedOptions = await Promise.all(
-            (values.options || []).map(async (option: any) => ({
-              ...option,
-              imageSrc: option.image?.rawFile
+            (values.options || []).map(async (option: any) => {
+              const imageSrc = option.image?.rawFile
                 ? await uploadField(option.image, "image")
-                : option.imageSrc,
-              audioSrc: option.audio?.rawFile
+                : option.imageSrc ?? "";
+          
+              const audioSrc = option.audio?.rawFile
                 ? await uploadField(option.audio, "audio")
-                : option.audioSrc,
-            }))
-          );
+                : option.audioSrc ?? "";
+          
+              return {
+                text: option.text,
+                correct: option.correct,
+                imageSrc,
+                audioSrc,
+              };
+            })
+          );          
 
           // Imagen general
           const imageUrl = values.image?.rawFile

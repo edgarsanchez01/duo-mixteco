@@ -25,12 +25,7 @@ const LessonPage = async () => {
     type: challenge.type,
     question: challenge.question,
     completed: challenge.completed,
-    options: Array.isArray(challenge.options)
-      ? challenge.options.map((opt: any) => ({
-          text: typeof opt.text === "string" ? opt.text : "",
-          correct: typeof opt.correct === "boolean" ? opt.correct : false,
-        }))
-      : undefined,
+    options: challenge.options,
     answer: typeof challenge.answer === "string" ? challenge.answer : undefined,
     pairs: Array.isArray(challenge.pairs)
       ? challenge.pairs.map((pair: any) => ({
@@ -40,8 +35,7 @@ const LessonPage = async () => {
       : undefined,
     imageSrc: typeof challenge.imageSrc === "string" ? challenge.imageSrc : null,
     audioSrc: typeof challenge.audioSrc === "string" ? challenge.audioSrc : null,
-  }));
-  
+  }));  
   
   
 
