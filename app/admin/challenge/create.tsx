@@ -181,20 +181,33 @@ const DynamicFields = () => {
           <TextInput source="imageSrc" label="O URL de imagen (opcional)" />
         </>
       )}
-
-      {type === "WRITE" && (
+     {type === "WRITE" && (
         <>
-          <TextInput source="answer" validate={[required()]} label="Respuesta Correcta" />
+          <TextInput
+            source="question"
+            validate={[required()]}
+            label="Pregunta"
+            helperText="Usa [corchetes] para marcar la palabra clave que mostrará un tooltip con la respuesta. Ej: ¿Cómo se dice [perro] en inglés?"
+            fullWidth
+          />
+          <TextInput
+            source="answer"
+            validate={[required()]}
+            label="Respuesta Correcta"
+            fullWidth
+          />
+      
           <FileInput source="image" label="Subir imagen de referencia (opcional)" accept="image/*">
             <FileField source="src" title="title" />
           </FileInput>
-          <TextInput source="imageSrc" label="O ingresa una URL de imagen (opcional)" />
+          <TextInput source="imageSrc" label="O ingresa una URL de imagen (opcional)" fullWidth />
+      
           <FileInput source="audio" label="Subir audio de referencia (opcional)" accept="audio/*">
             <FileField source="src" title="title" />
           </FileInput>
-          <TextInput source="audioSrc" label="O ingresa una URL de audio (opcional)" />
+          <TextInput source="audioSrc" label="O ingresa una URL de audio (opcional)" fullWidth />
         </>
-      )}
+      )}      
     </>
   );
 };

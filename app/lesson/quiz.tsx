@@ -146,6 +146,11 @@ export const Quiz = ({
       setSelectedOption(undefined);
       return;
     }
+    
+    if (challenge.type === "WRITE") {
+      window.dispatchEvent(new Event("write-check"));
+      return;
+    }    
 
     if (challenge.type === "SELECT" || challenge.type === "ASSIST") {
       const correctOption = options.find((option) => option.correct);
@@ -210,17 +215,17 @@ export const Quiz = ({
       <div className="flex-1">
         <div className="flex h-full items-center justify-center">
           <div className="flex w-full flex-col gap-y-12 px-6 lg:min-h-[350px] lg:w-[600px] lg:px-0">
-            {challenge.type !== "FILL-IN" && (
-                <h1 className="text-center text-lg font-bold text-neutral-700 lg:text-start lg:text-3xl">
-                  {title}
-                </h1>
-              )}
+          {challenge.type !== "FILL-IN" && challenge.type !== "WRITE" && (
+            <h1 className="text-center text-lg font-bold text-neutral-700 lg:text-start lg:text-3xl">
+              {title}
+            </h1>
+          )}  
             <div>
               {challenge.type === "ASSIST" && <QuestionBubble question={challenge.question} />}
               {challenge.type === "SELECT" || challenge.type === "ASSIST" ? (
                 <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} />
               ) : challenge.type === "WRITE" ? (
-                <Write correctAnswer={challenge.answer ?? ""} onSubmit={handleAnswerSubmit} />
+                <Write correctAnswer={challenge.answer ?? ""} question={challenge.question} onSubmit={handleAnswerSubmit} />
               ) : challenge.type === "MATCH" ? (
                 <Match pairs={challenge.pairs ?? []} onSubmit={handleMatchSubmit} />) : challenge.type === "FILL-IN" ? (
                   <FillIn
