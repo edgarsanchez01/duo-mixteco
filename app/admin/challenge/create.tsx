@@ -120,7 +120,7 @@ const DynamicFields = () => {
 
   return (
     <>
-      {type !== "MATCH" && type !== "FILL-IN" && (
+      {type !== "MATCH" && type !== "FILL-IN" && type !== "WRITE" &&(
         <TextInput source="question" validate={[required()]} label="Pregunta o Frase" />
       )}
 

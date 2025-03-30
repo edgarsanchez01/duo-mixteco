@@ -225,7 +225,7 @@ export const Quiz = ({
               {challenge.type === "SELECT" || challenge.type === "ASSIST" ? (
                 <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} />
               ) : challenge.type === "WRITE" ? (
-                <Write correctAnswer={challenge.answer ?? ""} question={challenge.question} onSubmit={handleAnswerSubmit} />
+                <Write correctAnswer={challenge.answer ?? ""} question={challenge.question} status={status}  imageSrc={challenge.imageSrc ?? ""} onSubmit={handleAnswerSubmit} />
               ) : challenge.type === "MATCH" ? (
                 <Match pairs={challenge.pairs ?? []} onSubmit={handleMatchSubmit} />) : challenge.type === "FILL-IN" ? (
                   <FillIn
