@@ -11,10 +11,14 @@ import {
   BooleanInput,
   FileInput,
   FileField,
+  useRedirect,
+  useNotify, // 👈 aquí
 } from "react-admin";
 import { useWatch } from "react-hook-form";
 
 export const ChallengeCreate = () => {
+  const redirect = useRedirect(); // 👈 Hook de redirección
+  const notify = useNotify(); // 👈 Notificación visual
   const uploadFile = async (file: File, type: "image" | "audio") => {
     const formData = new FormData();
     formData.append("file", file);
@@ -91,7 +95,8 @@ export const ChallengeCreate = () => {
             }),
           });
 
-          alert("Desafío creado con éxito");
+          notify("Desafío creado con éxito", { type: "success" });
+          redirect("/challenges"); // 👈 REDIRECCIÓN DESPUÉS DE CREAR
         }}
       >
         <SelectInput

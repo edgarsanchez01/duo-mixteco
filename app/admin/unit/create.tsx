@@ -11,7 +11,7 @@ export const UnitCreate = () => {
   return (
     <Create>
       <SimpleForm>
-        <TextInput source="title" validate={[required()]} label="Title" />
+        <TextInput source="title" validate={[required()]} label="Unidad" />
         <TextInput
           source="description"
           validate={[required()]}
