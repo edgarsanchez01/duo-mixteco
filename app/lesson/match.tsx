@@ -113,7 +113,7 @@ export const Match = ({ pairs, onSubmit }: MatchProps) => {
               size="lg"
               className={cn(
                 matchedPairs.some(p => p.left === word) && "opacity-70 border-none",
-                shakeWord === word && "bg-red-500 text-white"
+                shakeWord === word && "bg-primary-light text-white"
               )}
               disabled={matchedPairs.some(p => p.left === word)}
             >
@@ -137,7 +137,7 @@ export const Match = ({ pairs, onSubmit }: MatchProps) => {
               size="lg"
               className={cn(
                 matchedPairs.some(p => p.right === word) && "opacity-70 border-none",
-                shakeWord === word && "bg-red-500 text-white"
+                shakeWord === word && "bg-primary-light text-white"
               )}
               disabled={matchedPairs.some(p => p.right === word)}
             >

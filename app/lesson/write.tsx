@@ -8,7 +8,7 @@ type WriteProps = {
   onSubmit: (isCorrect: boolean) => void;
   question?: string;
   status: "none" | "correct" | "wrong";
-  imageSrc?: string; // ← Agregamos imagen opcional
+  imageSrc?: string;
 };
 
 export const Write = ({ correctAnswer, onSubmit, question, status, imageSrc }: WriteProps) => {
@@ -51,10 +51,10 @@ export const Write = ({ correctAnswer, onSubmit, question, status, imageSrc }: W
       parts.push(
         <span
           key={index}
-          className="relative group font-semibold text-green-600 cursor-help"
+          className="relative group font-semibold text-primary cursor-help"
         >
           {word}
-          <span className="absolute -top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white text-black text-base px-4 py-2 rounded-xl shadow-xl border border-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          <span className="absolute -top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white text-black text-base px-4 py-2 rounded-xl shadow-xl border border-border opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
             {correctAnswer}
           </span>
         </span>
@@ -80,7 +80,7 @@ export const Write = ({ correctAnswer, onSubmit, question, status, imageSrc }: W
           </div>
         )}
 
-        <div className="relative bg-white border border-gray-300 px-6 py-4 rounded-2xl shadow text-lg text-neutral-800 font-semibold">
+        <div className="relative bg-white border border-border px-6 py-4 rounded-2xl shadow text-lg text-text-dark font-semibold">
           <div className="absolute left-[-12px] top-6 w-0 h-0 border-y-[10px] border-r-[12px] border-y-transparent border-r-white" />
           {renderQuestionWithTooltip()}
         </div>
@@ -89,7 +89,7 @@ export const Write = ({ correctAnswer, onSubmit, question, status, imageSrc }: W
       <input
         type="text"
         placeholder="Escribe tu respuesta..."
-        className="w-full max-w-md px-4 py-3 text-lg border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+        className="w-full max-w-md px-4 py-3 text-lg border border-border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />

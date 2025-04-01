@@ -194,7 +194,9 @@ export const Quiz = ({
         <div className="mx-auto flex h-full max-w-lg flex-col items-center justify-center gap-y-4 text-center lg:gap-y-8">
           <Image src="/finish.svg" alt="Finish" className="hidden lg:block" height={100} width={100} />
           <Image src="/finish.svg" alt="Finish" className="block lg:hidden" height={100} width={100} />
-          <h1 className="text-lg font-bold text-neutral-700 lg:text-3xl">¡Bien hecho! <br /> Has completado la lección.</h1>
+          <h1 className="text-lg font-bold text-text-dark lg:text-3xl">
+            ¡Bien hecho! <br /> Has completado la lección.
+          </h1>
           <div className="flex w-full items-center gap-x-4">
             <ResultCard variant="points" value={challenges.length * 10} />
             <ResultCard variant="hearts" value={userSubscription?.isActive ? Infinity : hearts} />

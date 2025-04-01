@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -32,18 +31,18 @@ export const ExitModal = () => {
           <div className="mb-5 flex w-full items-center justify-center">
             <Image
               src="/mascot_sad.svg"
-              alt="Mascot Sad"
+              alt="Mascota triste"
               height={80}
               width={80}
             />
           </div>
 
           <DialogTitle className="text-center text-2xl font-bold">
-            Wait, don&apos;t go!
+            ¡Espera, no te vayas!
           </DialogTitle>
 
           <DialogDescription className="text-center text-base">
-            You&apos;re about to leave the lesson. Are you sure?
+            Estás a punto de salir de la lección. ¿Estás seguro?
           </DialogDescription>
         </DialogHeader>
 
@@ -55,7 +54,7 @@ export const ExitModal = () => {
               size="lg"
               onClick={close}
             >
-              Keep learning
+              Seguir aprendiendo
             </Button>
 
             <Button
@@ -67,7 +66,7 @@ export const ExitModal = () => {
                 router.push("/learn");
               }}
             >
-              End session
+              Terminar sesión
             </Button>
           </div>
         </DialogFooter>

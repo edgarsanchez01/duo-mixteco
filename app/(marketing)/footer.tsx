@@ -6,59 +6,59 @@ export const Footer = () => {
   return (
     <div className="hidden h-20 w-full border-t-2 border-slate-200 p-2 lg:block">
       <div className="mx-auto flex h-full max-w-screen-lg items-center justify-evenly">
-        <Button size="lg" variant="ghost" className="w-full cursor-default">
+        {/* <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/hr.svg"
-            alt="Croatian"
+            alt="Croata"
             height={32}
             width={40}
             className="mr-4 rounded-md"
           />
-          Croatian
-        </Button>
+          Croata
+        </Button> */}
 
-        <Button size="lg" variant="ghost" className="w-full cursor-default">
+        {/* <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/es.svg"
-            alt="Spanish"
+            alt="Español"
             height={32}
             width={40}
             className="mr-4 rounded-md"
           />
-          Spanish
-        </Button>
+          Español
+        </Button> */}
 
-        <Button size="lg" variant="ghost" className="w-full cursor-default">
+        {/* <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/fr.svg"
-            alt="French"
+            alt="Francés"
             height={32}
             width={40}
             className="mr-4 rounded-md"
           />
-          French
-        </Button>
+          Francés
+        </Button> */}
 
-        <Button size="lg" variant="ghost" className="w-full cursor-default">
+        {/* <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
             src="/it.svg"
-            alt="Italian"
+            alt="Italiano"
             height={32}
             width={40}
             className="mr-4 rounded-md"
           />
-          Italian
-        </Button>
+          Italiano
+        </Button> */}
 
         <Button size="lg" variant="ghost" className="w-full cursor-default">
           <Image
-            src="/jp.svg"
-            alt="Japanese"
+            src="https://i.blogs.es/3a92c4/lenguamix_zps63db59e0/1366_2000.jpg"
+            alt="Japonés"
             height={32}
             width={40}
             className="mr-4 rounded-md"
           />
-          Japanese
+          Mixteco
         </Button>
       </div>
     </div>

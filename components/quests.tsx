@@ -11,11 +11,11 @@ export const Quests = ({ points }: QuestsProps) => {
   return (
     <div className="space-y-4 rounded-xl border-2 p-4">
       <div className="flex w-full items-center justify-between space-y-2">
-        <h3 className="text-lg font-bold">Quests</h3>
+        <h3 className="text-lg font-bold">Misiones</h3>
 
         <Link href="/quests">
           <Button size="sm" variant="primaryOutline">
-            View all
+            Ver todas
           </Button>
         </Link>
       </div>
@@ -29,10 +29,10 @@ export const Quests = ({ points }: QuestsProps) => {
               className="flex w-full items-center gap-x-3 pb-4"
               key={quest.title}
             >
-              <Image src="/points.svg" alt="Points" width={40} height={40} />
+              <Image src="/points.svg" alt="Puntos" width={40} height={40} />
 
               <div className="flex w-full flex-col gap-y-2">
-                <p className="text-sm font-bold text-neutral-700">
+                <p className="text-sm font-bold text-text-dark">
                   {quest.title}
                 </p>
 

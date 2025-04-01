@@ -51,27 +51,27 @@ const Banner = ({ hide, setHide }: BannerProps) => {
           <p className="text-sm font-normal">
             📢{" "}
             <strong className="font-semibold">
-              Account creation is currently not working
+              Actualmente no es posible crear cuentas
             </strong>{" "}
-            due to Clerk&apos;s 500-user limit. To try it out, please{" "}
+            debido al límite de 500 usuarios de Clerk. Para probarlo, por favor{" "}
             <Link
               href={`${links.sourceCode}/fork`}
               target="_blank"
               rel="noreferrer noopener"
-              className="text-green-600 transition-opacity hover:opacity-75"
+              className="text-accent transition-opacity hover:opacity-75"
             >
-              fork this repo
+              haz un fork del repositorio
             </Link>{" "}
-            or{" "}
+            o{" "}
             <Link
               href={`mailto:${links.email}`}
               target="_blank"
               rel="noreferrer noopener"
-              className="text-green-600 transition-opacity hover:opacity-75"
+              className="text-accent transition-opacity hover:opacity-75"
             >
-              Contact me
+              contáctame
             </Link>{" "}
-            for access.
+            para solicitar acceso.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ const Banner = ({ hide, setHide }: BannerProps) => {
           className="absolute right-0 top-1/2 -translate-y-1/2 opacity-80 hover:opacity-100"
         >
           <XIcon className="size-3" />
-          <span className="sr-only">Close banner</span>
+          <span className="sr-only">Cerrar banner</span>
         </button>
       </div>
     </div>

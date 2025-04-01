@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -37,18 +36,18 @@ export const HeartsModal = () => {
           <div className="mb-5 flex w-full items-center justify-center">
             <Image
               src="/mascot_bad.svg"
-              alt="Mascot Bad"
+              alt="Mascota triste"
               height={80}
               width={80}
             />
           </div>
 
           <DialogTitle className="text-center text-2xl font-bold">
-            You ran out of hearts!
+            ¡Te quedaste sin corazones!
           </DialogTitle>
 
           <DialogDescription className="text-center text-base">
-            Get Pro for unlimited hearts, or purchase them in the store.
+            Obtén Pro para corazones ilimitados o cómpralos en la tienda.
           </DialogDescription>
         </DialogHeader>
 
@@ -60,7 +59,7 @@ export const HeartsModal = () => {
               size="lg"
               onClick={onClick}
             >
-              Get unlimited hearts
+              Obtener corazones ilimitados
             </Button>
 
             <Button
@@ -69,7 +68,7 @@ export const HeartsModal = () => {
               size="lg"
               onClick={close}
             >
-              No thanks
+              No, gracias
             </Button>
           </div>
         </DialogFooter>

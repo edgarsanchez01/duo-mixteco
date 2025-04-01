@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -28,16 +27,15 @@ export const PracticeModal = () => {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="mb-5 flex w-full items-center justify-center">
-            <Image src="/heart.svg" alt="Heart" height={100} width={100} />
+            <Image src="/heart.svg" alt="Corazón" height={100} width={100} />
           </div>
 
           <DialogTitle className="text-center text-2xl font-bold">
-            Practice lesson
+            Lección de práctica
           </DialogTitle>
 
           <DialogDescription className="text-center text-base">
-            Use practice lessons to regain hearts and points. You cannot loose
-            hearts or points in practice lessons.
+            Usa las lecciones de práctica para recuperar corazones y puntos. No puedes perder corazones ni puntos en ellas.
           </DialogDescription>
         </DialogHeader>
 
@@ -49,7 +47,7 @@ export const PracticeModal = () => {
               size="lg"
               onClick={close}
             >
-              I understand
+              Entendido
             </Button>
           </div>
         </DialogFooter>

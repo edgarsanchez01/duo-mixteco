@@ -27,29 +27,29 @@ export const Items = ({
     if (pending || hearts === MAX_HEARTS || points < POINTS_TO_REFILL) return;
 
     startTransition(() => {
-      refillHearts().catch(() => toast.error("Something went wrong."));
+      refillHearts().catch(() => toast.error("Algo salió mal."));
     });
   };
 
   const onUpgrade = () => {
-    toast.loading("Redirecting to checkout...");
+    toast.loading("Redirigiendo al checkout...");
     startTransition(() => {
       createStripeUrl()
         .then((response) => {
           if (response.data) window.location.href = response.data;
         })
-        .catch(() => toast.error("Something went wrong."));
+        .catch(() => toast.error("Algo salió mal."));
     });
   };
 
   return (
     <ul className="w-full">
       <div className="flex w-full items-center gap-x-4 border-t-2 p-4">
-        <Image src="/heart.svg" alt="Heart" height={60} width={60} />
+        <Image src="/heart.svg" alt="Corazón" height={60} width={60} />
 
         <div className="flex-1">
-          <p className="text-base font-bold text-neutral-700 lg:text-xl">
-            Refill hearts
+          <p className="text-base font-bold text-text-dark lg:text-xl">
+            Recargar corazones
           </p>
         </div>
 
@@ -63,11 +63,10 @@ export const Items = ({
           }
         >
           {hearts === MAX_HEARTS ? (
-            "full"
+            "Lleno"
           ) : (
             <div className="flex items-center">
-              <Image src="/points.svg" alt="Points" height={20} width={20} />
-
+              <Image src="/points.svg" alt="Puntos" height={20} width={20} />
               <p>{POINTS_TO_REFILL}</p>
             </div>
           )}
@@ -75,16 +74,16 @@ export const Items = ({
       </div>
 
       <div className="flex w-full items-center gap-x-4 border-t-2 p-4 pt-8">
-        <Image src="/unlimited.svg" alt="Unlimited" height={60} width={60} />
+        <Image src="/unlimited.svg" alt="Ilimitado" height={60} width={60} />
 
         <div className="flex-1">
-          <p className="text-base font-bold text-neutral-700 lg:text-xl">
-            Unlimited hearts
+          <p className="text-base font-bold text-text-dark lg:text-xl">
+            Corazones ilimitados
           </p>
         </div>
 
         <Button onClick={onUpgrade} disabled={pending} aria-disabled={pending}>
-          {hasActiveSubscription ? "settings" : "upgrade"}
+          {hasActiveSubscription ? "Configuración" : "Mejorar"}
         </Button>
       </div>
     </ul>

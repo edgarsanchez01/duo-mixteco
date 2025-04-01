@@ -41,7 +41,7 @@ export const FillIn = ({
 
   const renderSentence = () => {
     const parts = sentence.split("____");
-  
+
     return (
       <div className="flex items-center justify-center gap-6 flex-wrap px-4 text-center lg:text-left">
         {imageSrc && (
@@ -54,19 +54,19 @@ export const FillIn = ({
             />
           </div>
         )}
-  
-        <p className="text-lg lg:text-2xl font-semibold text-neutral-800 leading-relaxed">
+
+        <p className="text-lg lg:text-2xl font-semibold text-text-dark leading-relaxed">
           {parts[0]}
-          <span className="mx-2 inline-flex items-center justify-center min-w-[100px] h-[2rem] border-b-4 border-dotted border-gray-300">
+          <span className="mx-2 inline-flex items-center justify-center min-w-[100px] h-[2rem] border-b-4 border-dotted border-border">
             {selected ? (
               <span
                 className={cn(
                   "inline-block px-3 py-1 rounded-full transition-colors text-base",
                   locked
                     ? selected === correctAnswer
-                      ? "bg-green-200 text-green-800"
-                      : "bg-red-200 text-red-800"
-                    : "bg-gray-200"
+                      ? "bg-primary/20 text-primary"
+                      : "bg-primary-light/20 text-primary-light"
+                    : "bg-accent/30 text-accent"
                 )}
               >
                 {selected}
@@ -79,7 +79,7 @@ export const FillIn = ({
         </p>
       </div>
     );
-  };  
+  };
 
   return (
     <div className="flex flex-col items-center gap-8 mt-6">

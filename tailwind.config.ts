@@ -22,12 +22,28 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          light: "#F5E9EC",
         },
+        foreground: "hsl(var(--foreground))",
+        
+        // Nueva paleta vino personalizada
+        primary: {
+          DEFAULT: "#7A2F47",
+          light: "#97415F",
+          dark: "#601F35",
+          foreground: "#FFFFFF",
+        },
+        accent: {
+          DEFAULT: "#BE647E",
+          foreground: "#FFFFFF",
+        },
+        text: {
+          dark: "#3C0E1C",
+        },
+
+        // Estos colores manténlos como variables, ya que parecen dinámicos:
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -39,10 +55,6 @@ const config = {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

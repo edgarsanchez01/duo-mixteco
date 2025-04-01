@@ -36,13 +36,13 @@ const QuestsPage = async () => {
 
       <FeedWrapper>
         <div className="flex w-full flex-col items-center">
-          <Image src="/quests.svg" alt="Quests" height={90} width={90} />
+          <Image src="/quests.svg" alt="Misiones" height={90} width={90} />
 
-          <h1 className="my-6 text-center text-2xl font-bold text-neutral-800">
-            Quests
+          <h1 className="my-6 text-center text-2xl font-bold text-text-dark">
+            Misiones
           </h1>
           <p className="mb-6 text-center text-lg text-muted-foreground">
-            Complete quests by earning points.
+            Completa misiones obteniendo puntos.
           </p>
 
           <ul className="w-full">
@@ -56,13 +56,13 @@ const QuestsPage = async () => {
                 >
                   <Image
                     src="/points.svg"
-                    alt="Points"
+                    alt="Puntos"
                     width={60}
                     height={60}
                   />
 
                   <div className="flex w-full flex-col gap-y-2">
-                    <p className="text-xl font-bold text-neutral-700">
+                    <p className="text-xl font-bold text-text-dark">
                       {quest.title}
                     </p>
 
