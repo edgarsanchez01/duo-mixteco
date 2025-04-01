@@ -10,7 +10,11 @@ type MatchProps = {
   onSubmit: (status: "correct" | "wrong") => void;
 };
 
+const shuffleArray = <T,>(array: T[]) => [...array].sort(() => Math.random() - 0.5);
+
 export const Match = ({ pairs, onSubmit }: MatchProps) => {
+  const [leftWords, setLeftWords] = useState<string[]>([]);
+  const [rightWords, setRightWords] = useState<string[]>([]);
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [selectedColumn, setSelectedColumn] = useState<"left" | "right" | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<{ left: string; right: string }[]>([]);
@@ -20,6 +24,31 @@ export const Match = ({ pairs, onSubmit }: MatchProps) => {
   const [incorrectAudio, , incorrectControls] = useAudio({ src: "/incorrect.wav" });
 
   const hasPlayedSound = useRef(false);
+
+  useEffect(() => {
+    const left = shuffleArray(pairs.map(p => p.left));
+    let right = shuffleArray(pairs.map(p => p.right));
+
+    const isMatchingSameIndex = () => {
+      return left.some((leftWord, i) =>
+        pairs.some(pair => pair.left === leftWord && pair.right === right[i])
+      );
+    };
+
+    let attempts = 0;
+    while (isMatchingSameIndex() && attempts < 10) {
+      right = shuffleArray(pairs.map(p => p.right));
+      attempts++;
+    }
+
+    setLeftWords(left);
+    setRightWords(right);
+    setSelectedWord(null);
+    setSelectedColumn(null);
+    setMatchedPairs([]);
+    setShakeWord(null);
+    hasPlayedSound.current = false;
+  }, [pairs]);
 
   useEffect(() => {
     if (matchedPairs.length === pairs.length && matchedPairs.length > 0) {
@@ -46,7 +75,11 @@ export const Match = ({ pairs, onSubmit }: MatchProps) => {
       );
 
       if (isCorrectPair) {
-        setMatchedPairs([...matchedPairs, { left: selectedWord, right: word }]);
+        const newPair = column === "left"
+          ? { left: word, right: selectedWord! }
+          : { left: selectedWord!, right: word };
+
+        setMatchedPairs([...matchedPairs, newPair]);
         void correctControls.play();
       } else {
         setShakeWord(selectedWord);
@@ -66,49 +99,49 @@ export const Match = ({ pairs, onSubmit }: MatchProps) => {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          {pairs.map((pair, index) => (
+          {leftWords.map((word, index) => (
             <Button
               key={`left-${index}`}
-              onClick={() => handleSelectWord(pair.left, "left")}
+              onClick={() => handleSelectWord(word, "left")}
               variant={
-                matchedPairs.some(p => p.left === pair.left || p.right === pair.left)
+                matchedPairs.some(p => p.left === word || p.right === word)
                   ? "locked"
-                  : selectedWord === pair.left
+                  : selectedWord === word
                   ? "sidebarOutline"
                   : "default"
               }
               size="lg"
               className={cn(
-                matchedPairs.some(p => p.left === pair.left) && "opacity-70 border-none",
-                shakeWord === pair.left && "bg-red-500 text-white"
+                matchedPairs.some(p => p.left === word) && "opacity-70 border-none",
+                shakeWord === word && "bg-red-500 text-white"
               )}
-              disabled={matchedPairs.some(p => p.left === pair.left)}
+              disabled={matchedPairs.some(p => p.left === word)}
             >
-              {pair.left}
+              {word}
             </Button>
           ))}
         </div>
 
         <div className="flex flex-col gap-2">
-          {pairs.map((pair, index) => (
+          {rightWords.map((word, index) => (
             <Button
               key={`right-${index}`}
-              onClick={() => handleSelectWord(pair.right, "right")}
+              onClick={() => handleSelectWord(word, "right")}
               variant={
-                matchedPairs.some(p => p.left === pair.right || p.right === pair.right)
+                matchedPairs.some(p => p.left === word || p.right === word)
                   ? "locked"
-                  : selectedWord === pair.right
+                  : selectedWord === word
                   ? "sidebarOutline"
                   : "default"
               }
               size="lg"
               className={cn(
-                matchedPairs.some(p => p.right === pair.right) && "opacity-70 border-none",
-                shakeWord === pair.right && "bg-red-500 text-white"
+                matchedPairs.some(p => p.right === word) && "opacity-70 border-none",
+                shakeWord === word && "bg-red-500 text-white"
               )}
-              disabled={matchedPairs.some(p => p.right === pair.right)}
+              disabled={matchedPairs.some(p => p.right === word)}
             >
-              {pair.right}
+              {word}
             </Button>
           ))}
         </div>
