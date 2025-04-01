@@ -44,7 +44,7 @@ export const ChallengeEdit = () => {
             }
             return field;
           };
-
+        
           if (
             (values.type !== "FILL-IN" && (!values.question || values.question.trim() === "")) ||
             (values.type === "FILL-IN" && (!values.fillInQuestion || values.fillInQuestion.trim() === ""))
@@ -52,17 +52,17 @@ export const ChallengeEdit = () => {
             notify("La pregunta es obligatoria", { type: "error" });
             return;
           }
-
+        
           const processedOptions = await Promise.all(
             (values.options || []).map(async (option: any) => {
               const imageSrc = option.image?.rawFile
                 ? await uploadField(option.image, "image")
                 : option.imageSrc ?? "";
-
+        
               const audioSrc = option.audio?.rawFile
                 ? await uploadField(option.audio, "audio")
                 : option.audioSrc ?? "";
-
+        
               return {
                 text: option.text,
                 correct: option.correct,
@@ -71,30 +71,36 @@ export const ChallengeEdit = () => {
               };
             })
           );
-
+        
           const imageUrl = values.image?.rawFile
             ? await uploadFile(values.image.rawFile, "image")
             : values.imageSrc ?? "";
-
+        
+          // Construimos el payload de forma explícita sin incluir fillInQuestion
+          const payload = {
+            id: values.id,
+            lessonId: values.lessonId,
+            type: values.type,
+            order: values.order,
+            question:
+              values.type === "FILL-IN"
+                ? values.fillInQuestion.trim()
+                : values.question.trim(),
+            options: processedOptions,
+            imageSrc: imageUrl,
+          };
+        
           await fetch(`/api/challenges/${values.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              ...values,
-              question:
-                values.type === "FILL-IN"
-                  ? values.fillInQuestion.trim()
-                  : values.question.trim(),
-              options: processedOptions,
-              imageSrc: imageUrl,
-            }),
+            body: JSON.stringify(payload),
           });
-
+        
           notify("Desafío actualizado con éxito", { type: "success" });
           redirect("/challenges");
-        }}
+        }}        
       >
         <SelectInput
           source="type"
